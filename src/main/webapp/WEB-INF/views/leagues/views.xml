@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="leagues/list" extends="default">
+		<put-attribute name="title" value="Leagues" />
+		<put-attribute name="body" value="/WEB-INF/views/leagues/list-leagues.jsp" />
+		<put-attribute name="current" value="leagues" />
+	</definition>
+	<definition name="leagues/join" extends="default">
+		<put-attribute name="title" value="Join League" />
+		<put-attribute name="body" value="/WEB-INF/views/leagues/join-league.jsp" />
+		<put-attribute name="current" value="leagues" />
+	</definition>
+	<definition name="leagues/create" extends="default">
+		<put-attribute name="title" value="Create League" />
+		<put-attribute name="body" value="/WEB-INF/views/leagues/create-league.jsp" />
+		<put-attribute name="current" value="leagues" />
+	</definition>
+	<definition name="leagues/edit" extends="default">
+		<put-attribute name="title" value="Edit League" />
+		<put-attribute name="body" value="/WEB-INF/views/leagues/edit-league.jsp" />
+		<put-attribute name="current" value="leagues" />
+	</definition>
+	<definition name="leagues/view" extends="default">
+		<put-attribute name="title" value="League Details" />
+		<put-attribute name="body" value="/WEB-INF/views/leagues/view-league.jsp" />
+		<put-attribute name="current" value="leagues" />
+	</definition>
+</tiles-definitions>

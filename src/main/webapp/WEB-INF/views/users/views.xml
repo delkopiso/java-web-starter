@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="auth/signin" extends="default">
+		<put-attribute name="title" value="Sign In" />
+		<put-attribute name="body" value="/WEB-INF/views/users/authentication/signin.jsp" />
+		<put-attribute name="current" value="signin" />
+	</definition>
+	<definition name="auth/signup" extends="default">
+		<put-attribute name="title" value="Sign Up" />
+		<put-attribute name="body" value="/WEB-INF/views/users/authentication/signup.jsp" />
+		<put-attribute name="current" value="signup" />
+	</definition>
+	<definition name="settings/profile" extends="default">
+		<put-attribute name="title" value="Edit Profile" />
+		<put-attribute name="body" value="/WEB-INF/views/users/settings/change-password.jsp" />
+		<put-attribute name="current" value="settings" />
+	</definition>
+	<definition name="settings/password" extends="default">
+		<put-attribute name="title" value="Change Password" />
+		<put-attribute name="body" value="/WEB-INF/views/users/settings/edit-profile.jsp" />
+		<put-attribute name="current" value="settings" />
+	</definition>
+	<definition name="settings/account" extends="default">
+		<put-attribute name="title" value="My Account" />
+		<put-attribute name="body" value="/WEB-INF/views/users/settings/account.jsp" />
+		<put-attribute name="current" value="settings" />
+	</definition>
+	<definition name="password/forgot" extends="default">
+		<put-attribute name="title" value="Forgot Password" />
+		<put-attribute name="body" value="/WEB-INF/views/users/password/forgot-password.jsp" />
+		<put-attribute name="current" value="signin" />
+	</definition>
+	<definition name="password/reset" extends="default">
+		<put-attribute name="title" value="Reset Password" />
+		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password.jsp" />
+		<put-attribute name="current" value="signin" />
+	</definition>
+	<definition name="password/reset-success" extends="default">
+		<put-attribute name="title" value="Reset Password" />
+		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password-success.jsp" />
+		<put-attribute name="current" value="signin" />
+	</definition>
+	<definition name="password/reset-invalid" extends="default">
+		<put-attribute name="title" value="Reset Password" />
+		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password-invalid.jsp" />
+		<put-attribute name="current" value="signin" />
+	</definition>
+	<definition name="admin/users" extends="default">
+		<put-attribute name="title" value="Users" />
+		<put-attribute name="body" value="/WEB-INF/views/users/admin/list-users.jsp" />
+		<put-attribute name="current" value="users" />
+	</definition>
+	<definition name="admin/user-detail" extends="default">
+		<put-attribute name="title" value="User detail" />
+		<put-attribute name="body" value="/WEB-INF/views/users/admin/view-user.jsp" />
+		<put-attribute name="current" value="users" />
+	</definition>
+</tiles-definitions>
