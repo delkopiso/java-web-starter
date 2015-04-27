@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -89,7 +93,8 @@ public class UserController {
 	}
 	
 	@RequestMapping("/verify/{token}")
-	public String verify(Model model, @PathVariable String token) {
+	public String verify(Model model, @PathVariable String token,
+			RedirectAttributes redirectAttributes) {
 		VerificationToken verificationToken = userService.getVerificationToken(token);
 		if (verificationToken == null) {
             model.addAttribute("invalid", true);
@@ -106,8 +111,12 @@ public class UserController {
         
         user.setUserEnabled(true);
         userService.save(user);
-        model.addAttribute("verified", true);
-		return "settings/account";
+		Authentication authentication = new UsernamePasswordAuthenticationToken(
+				user.getUserName(), user.getUserPassword(),
+				AuthorityUtils.createAuthorityList("ROLE_USER"));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+        redirectAttributes.addFlashAttribute("verified", true);
+		return "redirect:/account.html";
 	}
 	
 	@RequestMapping("/reverify/{existingToken}")
