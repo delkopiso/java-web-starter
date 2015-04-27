@@ -11,34 +11,23 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title><tiles:getAsString name="title" /></title>
 
-<!-- <link rel="stylesheet" -->
-<!-- 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
-	<link rel="stylesheet" type="text/css" href='<spring:url value="/resources/css/bootstrap.min.css" />'>
+<link rel="stylesheet" type="text/css" href='<spring:url value="/resources/css/bootstrap.min.css" />'>
+<link rel="stylesheet" type="text/css" href='<spring:url value="/resources/css/styles.css" />'>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!-- <script -->
-<!-- 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
-	<script type="text/javascript" src='<spring:url value="/resources/js/jquery.min.js" />'></script>
-<!-- <script type="text/javascript" -->
-<!-- 	src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script> -->
-	<script type="text/javascript" src='<spring:url value="/resources/js/jquery.validate.min.js" />'></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<!-- <script -->
-<!-- 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
-	<script type="text/javascript" src='<spring:url value="/resources/js/bootstrap.min.js" />'></script>
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.min.js" />'></script>
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.validate.min.js" />'></script>
+<script type="text/javascript" src='<spring:url value="/resources/js/bootstrap.min.js" />'></script>
 <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
 
 	<tilesx:useAttribute name="current" />
 
 	<div class="container">
-		<!-- 		<nav class="navbar navbar-default navbar-fixed-top"> -->
-		<!-- 		<nav class="navbar navbar-default navbar-static-top"> -->
-		<nav class="navbar navbar-default">
+		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
@@ -48,7 +37,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href='<spring:url value="/" />'>Fantasy</a>
+					<a class="navbar-brand" href='<spring:url value="/" />'>Starter</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -65,9 +54,9 @@
 					<ul class="nav navbar-nav navbar-right">
 						<security:authorize access="isAnonymous()">
 							<li class="${current == 'signup' ? 'active' : ''}"><a
-								href='<spring:url value="/register.html" />'>Register</a></li>
+								href='<spring:url value="/signup.html" />'>Sign Up</a></li>
 							<li class="${current == 'signin' ? 'active' : ''}"><a
-								href='<spring:url value="/login.html" />'>Login</a></li>
+								href='<spring:url value="/signin.html" />'>Sign In</a></li>
 						</security:authorize>
 						<security:authorize access="isAuthenticated()">
 							<li class="dropdown ${current == 'settings' ? 'active' : ''}"><a

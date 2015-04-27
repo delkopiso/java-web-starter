@@ -12,7 +12,7 @@
 		<intercept-url pattern="/users**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/account**" access="hasRole('ROLE_USER')" />
-		<form-login login-page="/login.html" />
+		<form-login login-page="/signin.html" />
 		<logout logout-success-url="/" />
 	</http>
 
@@ -28,4 +28,5 @@
 		</authentication-provider>
 	</authentication-manager>
 
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans:beans>

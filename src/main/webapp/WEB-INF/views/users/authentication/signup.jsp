@@ -10,48 +10,39 @@
 	</c:if>
 
 	<div class="form-group">
-		<label for="inputName" class="col-sm-2 control-label">Name:</label>
-		<div class="col-sm-10">
+		<label for="inputName" class="col-sm-3 control-label">Username:</label>
+		<div class="col-sm-9">
 			<form:input path="userName" type="text" cssClass="form-control"
-				id="inputName" placeholder="Full Name" />
+				id="inputName" placeholder="Username" />
 			<form:errors path="userName" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="inputEmail" class="col-sm-2 control-label">Email:</label>
-		<div class="col-sm-10">
+		<label for="inputEmail" class="col-sm-3 control-label">Email Address:</label>
+		<div class="col-sm-9">
 			<form:input path="userEmail" type="email" cssClass="form-control"
 				id="inputEmail" placeholder="Email Address" />
 			<form:errors path="userEmail" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="inputPassword" class="col-sm-2 control-label">Password:</label>
-		<div class="col-sm-10">
+		<label for="inputPassword" class="col-sm-3 control-label">Password:</label>
+		<div class="col-sm-9">
 			<form:password path="userPassword" class="form-control"
 				id="inputPassword" placeholder="Password" />
 			<form:errors path="userPassword" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="inputConfirmPassword" class="col-sm-2 control-label">Password again:</label>
-		<div class="col-sm-10">
+		<label for="inputConfirmPassword" class="col-sm-3 control-label">Confirm Password:</label>
+		<div class="col-sm-9">
 			<input type="password" class="form-control" name="confirmPassword"
 				id="inputConfirmPassword" placeholder="Confirm Password" />
 		</div>
 	</div>
-	<!--   <div class="form-group"> -->
-	<!--     <div class="col-sm-offset-2 col-sm-10"> -->
-	<!--       <div class="checkbox"> -->
-	<!--         <label> -->
-	<!--           <input type="checkbox"> Remember me -->
-	<!--         </label> -->
-	<!--       </div> -->
-	<!--     </div> -->
-	<!--   </div> -->
 	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<input type="submit" value="Save" class="btn btn-default" />
+		<div class="col-sm-offset-3 col-sm-9">
+			<input type="submit" value="Sign Up" class="btn btn-primary" />
 		</div>
 	</div>
 </form:form>
@@ -64,7 +55,7 @@ $(document).ready(function() {
 				required : true,
 				minlength : 3,
 				remote: {
-					url: "<spring:url value='/register/available.html' />",
+					url: "<spring:url value='/signup/available-name.html' />",
 					type: "get",
 					data: {
 						username: function() {
@@ -75,7 +66,16 @@ $(document).ready(function() {
 			},
 			userEmail : {
 				required : true,
-				email : true
+				email : true,
+				remote: {
+					url: "<spring:url value='/signup/email-exists.html' />",
+					type: "get",
+					data: {
+						email: function() {
+							return $("#inputEmail").val();
+						}
+					}
+				}
 			},
 			userPassword : {
 				required : true,
@@ -96,6 +96,9 @@ $(document).ready(function() {
 		messages: {
 			userName: {
 				remote: "Username already exists."
+			},
+			userEmail: {
+				remote: "Email address is already registered."
 			}
 		}
 	});

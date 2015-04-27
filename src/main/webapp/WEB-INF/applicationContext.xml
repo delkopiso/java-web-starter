@@ -11,6 +11,24 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
+	
+	<bean id="registrationListener" class="com.kossyuzokwe.event.listener.RegistrationCompleteListener" />
+	<bean id="reverifyListener" class="com.kossyuzokwe.event.listener.ReverifyAccountListener" />
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.sendgrid.net" />
+		<property name="port" value="587" />
+		<property name="username" value="app36267194@heroku.com" />
+		<property name="password" value="cffgwjwq" />
+		<property name="javaMailProperties">
+			<props>
+				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
+				<prop key="mail.smtp.auth">true</prop>
+				<!-- Use TLS to encrypt communication with SMTP server -->
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 

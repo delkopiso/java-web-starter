@@ -1,4 +1,4 @@
-package com.kossyuzokwe.annotation;
+package com.kossyuzokwe.validation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -11,12 +11,12 @@ import javax.validation.Payload;
 
 @Target({ FIELD })
 @Retention(RUNTIME)
-@Constraint(validatedBy = { UniqueUsernameValidator.class })
-public @interface UniqueUsername {
+@Constraint(validatedBy = { UniqueEmailValidator.class })
+public @interface UniqueEmail {
 
 	String message();
 
-	Class<?>[] groups() default { };
+	Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default { };
+	Class<? extends Payload>[] payload() default {};
 }
