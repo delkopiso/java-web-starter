@@ -1,7 +1,7 @@
 package com.kossyuzokwe.service;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -41,24 +41,36 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public List<User> findAll() {
+	public Collection<User> findAll() {
 		return userRepository.findAll();
 	}
 
-	public User findOneByUserId(String id) {
-		return userRepository.findOne(id);
+	public User findUserByUserId(String id) {
+		return userRepository.findByUserId(id);
 	}
 
-	public void delete(String id) {
-		userRepository.delete(id);
-	}
-
-	public User findOneByUserName(String username) {
+	public User findUserByUserName(String username) {
 		return userRepository.findByUserName(username);
 	}
 
-	public User findOneByUserEmail(String email) {
+	public User findUserByUserEmail(String email) {
 		return userRepository.findByUserEmail(email);
+	}
+
+	public User findUserByVerificationToken(String verificationToken) {
+		return verificationTokenRepository.findByToken(verificationToken).getUser();
+	}
+
+	public User findUserByPasswordResetToken(String token) {
+		return resetTokenRepository.findByToken(token).getUser();
+	}
+
+	public void save(User user) {
+		userRepository.save(user);
+	}
+
+	public void deleteUser(String id) {
+		userRepository.delete(id);
 	}
 
 	public User registerNewUserAccount(User userInfo) {
@@ -70,29 +82,16 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public User getUser(String verificationToken) {
-        User user = verificationTokenRepository.findByToken(verificationToken).getUser();
-		return user;
+	public void createVerificationTokenForUser(User user, String token) {
+		VerificationToken myToken = new VerificationToken(token, user);
+		verificationTokenRepository.save(myToken);
 	}
 
 	public VerificationToken getVerificationToken(String VerificationToken) {
 		return verificationTokenRepository.findByToken(VerificationToken);
 	}
 
-	public void save(User user) {
-		userRepository.save(user);
-	}
-
-	public void deleteUser(User user) {
-		userRepository.delete(user);
-	}
-
-	public void createVerificationTokenForUser(User user, String token) {
-		VerificationToken myToken = new VerificationToken(token, user);
-		verificationTokenRepository.save(myToken);
-	}
-
-	public VerificationToken generateNewVerificationToken(String existingVerificationToken) {
+	public VerificationToken regenerateVerificationToken(String existingVerificationToken) {
 		VerificationToken vToken = verificationTokenRepository
 				.findByToken(existingVerificationToken);
 		vToken.updateToken(UUID.randomUUID().toString());
@@ -100,26 +99,13 @@ public class UserService {
 		return vToken;
 	}
 
-	public void createPasswordResetTokenForUser(User user,
-			String token) {
+	public void createPasswordResetTokenForUser(User user, String token) {
 		PasswordResetToken myToken = new PasswordResetToken(token, user);
 		resetTokenRepository.save(myToken);
 	}
 
-	public User findUserByEmail(String email) {
-		return userRepository.findByUserEmail(email);
-	}
-
 	public PasswordResetToken getPasswordResetToken(String token) {
 		return resetTokenRepository.findByToken(token);
-	}
-
-	public User getUserByPasswordResetToken(String token) {
-		return resetTokenRepository.findByToken(token).getUser();
-	}
-
-	public User getUserByID(String id) {
-		return userRepository.findOne(id);
 	}
 
 	public void changeUserPassword(User user, String password) {
@@ -127,12 +113,11 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public boolean checkIfValidOldPassword(User user,
-			String oldPassword) {
+	public boolean validOldPassword(User user, String oldPassword) {
 		return passwordEncoder.matches(oldPassword, user.getUserPassword());
 	}
 
-	public boolean emailExist(String email) {
+	public boolean emailExists(String email) {
 		User user = userRepository.findByUserEmail(email);
 		if (user != null) {
 			return true;

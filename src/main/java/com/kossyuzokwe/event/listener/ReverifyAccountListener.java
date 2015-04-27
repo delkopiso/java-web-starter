@@ -27,7 +27,7 @@ public class ReverifyAccountListener implements ApplicationListener<OnReverifyAc
 		User user = event.getUser();
 		VerificationToken existingToken = verificationTokenRepository.findByUser(user);
 		String token = existingToken.getToken();
-		VerificationToken newToken = userService.generateNewVerificationToken(token);
+		VerificationToken newToken = userService.regenerateVerificationToken(token);
 		SimpleMailMessage email = emailService.constructVerifyEmailMessage(event, user, newToken.getToken());
 		emailService.send(email);
 	}

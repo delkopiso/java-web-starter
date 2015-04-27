@@ -18,11 +18,6 @@
 		<put-attribute name="body" value="/WEB-INF/views/users/authentication/verify-failed.jsp" />
 		<put-attribute name="current" value="failed" />
 	</definition>
-	<definition name="settings/profile" extends="default">
-		<put-attribute name="title" value="Edit Profile" />
-		<put-attribute name="body" value="/WEB-INF/views/users/settings/edit-profile.jsp" />
-		<put-attribute name="current" value="settings" />
-	</definition>
 	<definition name="settings/password" extends="default">
 		<put-attribute name="title" value="Change Password" />
 		<put-attribute name="body" value="/WEB-INF/views/users/settings/change-password.jsp" />

@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
+
+<div class="page-header">
+  <h2>Application Users <small>...</small></h2>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function() {

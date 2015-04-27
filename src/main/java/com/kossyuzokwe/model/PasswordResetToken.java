@@ -139,7 +139,7 @@ public class PasswordResetToken {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Token [String=").append(token).append("]")
-				.append("[Expires").append(expiryDate).append("]");
+				.append("[Expires=").append(expiryDate).append("]");
 		return builder.toString();
 	}
 }

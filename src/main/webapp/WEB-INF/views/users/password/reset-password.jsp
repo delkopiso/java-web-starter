@@ -3,20 +3,27 @@
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
 
-<h2>Reset password</h2>
+<div class="page-header">
+  <h2>Reset Password <small>...</small></h2>
+</div>
 
 <c:choose>
 	<c:when test="${invalid eq true}">
-		<div class="alert alert-info" role="alert">Invalid account confirmation token.</div>
+		<div class="alert alert-info" role="alert">Invalid account
+			confirmation token.</div>
 	</c:when>
 	<c:when test="${expired eq true}">
-		<div class="alert alert-danger" role="alert">Your registration token has expired. <a href='<spring:url value="/register.html" />'
-				class="alert-link">Request reset again</a>.
+		<div class="alert alert-danger" role="alert">
+			Your reset token has expired. <a
+				href='<spring:url value="/register.html" />' class="alert-link">Request
+				reset again</a>.
 		</div>
 	</c:when>
 
 	<c:otherwise>
-		<form:form commandName="user" cssClass="form-horizontal resetForm">
+		<form:form commandName="user"
+			action="${pageContext.request.contextPath}/reset.html" method="post"
+			cssClass="form-horizontal resetForm">
 			<div class="form-group">
 				<label for="inputPassword" class="col-sm-3 control-label">New
 					Password:</label>
@@ -34,6 +41,7 @@
 						id="inputConfirmPassword" placeholder="Confirm Password" />
 				</div>
 			</div>
+			<form:input type="hidden" path="userId" value="${id}" />
 			<div class="form-group">
 				<div class="col-sm-offset-3 col-sm-9">
 					<input type="submit" value="Reset Password" class="btn btn-primary" />

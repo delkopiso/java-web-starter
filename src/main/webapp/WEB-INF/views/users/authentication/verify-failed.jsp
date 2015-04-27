@@ -2,6 +2,11 @@
 	pageEncoding="UTF-8"%>
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
+
+<div class="page-header">
+  <h2>Account Verification <small>...</small></h2>
+</div>
+
 <c:choose>
 	<c:when test="${resent eq true}">
 		<div class="alert alert-info" role="alert">A new token has been sent to you! Follow the instructions in your email to reverify.</div>

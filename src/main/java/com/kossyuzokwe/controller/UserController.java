@@ -6,6 +6,8 @@ import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kossyuzokwe.event.OnRegistrationCompleteEvent;
+import com.kossyuzokwe.event.OnResetPasswordEvent;
 import com.kossyuzokwe.event.OnReverifyAccountEvent;
 import com.kossyuzokwe.model.PasswordResetToken;
 import com.kossyuzokwe.model.User;
@@ -31,6 +34,8 @@ import com.kossyuzokwe.util.Helpers;
 
 @Controller
 public class UserController {
+	
+	Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private UserService userService;
@@ -44,6 +49,11 @@ public class UserController {
 	@ModelAttribute("user")
 	public User constructUser() {
 		return new User();
+	}
+	
+	@ModelAttribute("passwordChange")
+	public PasswordChange constructPasswordChange() {
+		return new PasswordChange();
 	}
 
 	@RequestMapping("/signup")
@@ -67,14 +77,14 @@ public class UserController {
 	@RequestMapping("/signup/available-name")
 	@ResponseBody
 	public String availableName(@RequestParam String username) {
-		Boolean available = userService.findOneByUserName(username) == null;
+		Boolean available = userService.findUserByUserName(username) == null;
 		return available.toString();
 	}
 
 	@RequestMapping("/signup/email-exists")
 	@ResponseBody
 	public String emailExists(@RequestParam String email) {
-		Boolean available = !userService.emailExist(email);
+		Boolean available = !userService.emailExists(email);
 		return available.toString();
 	}
 	
@@ -103,12 +113,17 @@ public class UserController {
 	@RequestMapping("/reverify/{existingToken}")
 	public String reverify(Model model, HttpServletRequest request,
 			@PathVariable String existingToken) {
-		VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
-		User user = userService.getUser(newToken.getToken());
+		VerificationToken newToken = userService.regenerateVerificationToken(existingToken);
+		User user = userService.findUserByVerificationToken(newToken.getToken());
 		String appUrl = Helpers.getURL(request);
 		eventPublisher.publishEvent(new OnReverifyAccountEvent(user, appUrl));
 		model.addAttribute("resent", true);
 		return "auth/failed";
+	}
+
+	@RequestMapping("/signin")
+	public String login() {
+		return "auth/signin";
 	}
 
 	@RequestMapping("/forgot")
@@ -117,10 +132,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
-	public String doForgot(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
-		boolean notFound = userService.findOneByUserEmail(user.getUserEmail()) == null;
-		//TODO: Send email
-		redirectAttributes.addFlashAttribute("notfound", notFound);
+	public String doForgot(@ModelAttribute("user") User user, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+		User existingUser = userService.findUserByUserEmail(user.getUserEmail());
+		boolean userExists = existingUser != null;
+		if (userExists) {
+			String appUrl = Helpers.getURL(request);
+			eventPublisher.publishEvent(new OnResetPasswordEvent(existingUser, appUrl));
+		}
+		redirectAttributes.addFlashAttribute("exists", userExists);
 		return "redirect:/forgot.html";
 	}
 	
@@ -128,10 +148,12 @@ public class UserController {
 	public String showReset(Model model, @PathVariable String id, @PathVariable String token) {
     	PasswordResetToken passToken = userService.getPasswordResetToken(token);
     	if (passToken != null) {
+        	User requestUser = userService.findUserByUserId(id);
+        	User tokenUser = passToken.getUser();
     		Calendar cal = Calendar.getInstance();
             if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
                 model.addAttribute("expired", true);
-            } else if (passToken.getUser().getUserId() != id) {
+            } else if (!tokenUser.equals(requestUser)) {
                 model.addAttribute("invalid", true);
             } else {
             	model.addAttribute("id", id);
@@ -143,26 +165,36 @@ public class UserController {
 	}
 
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
-//    @PreAuthorize("hasRole('ROLE_USER')")
-    public String doReset(@ModelAttribute("user") User user) {
-    	User existingUser = userService.findOneByUserId(user.getUserId());
+    public String doReset(@ModelAttribute("user") User user,
+			RedirectAttributes redirectAttributes) {
+    	User existingUser = userService.findUserByUserId(user.getUserId());
     	if (existingUser == null) {
-    		return "password/reset-invalid";
+    		redirectAttributes.addFlashAttribute("reset", "failed");
+    	} else {
+        	userService.changeUserPassword(existingUser, user.getUserPassword());
+    		redirectAttributes.addFlashAttribute("reset", "success");
     	}
-    	userService.changeUserPassword(existingUser, user.getUserPassword());
-    	return "password/reset-success";
+    	return "redirect:/signin.html";
     }
 
-    @RequestMapping(value = "/password/", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String changePassword(Principal principal) {
-    	return null;
+    @RequestMapping("/password/edit")
+    public String showPassword() {
+    	return "settings/password";
     }
 
-	@RequestMapping("/signin")
-	public String login() {
-		return "auth/signin";
-	}
+    @RequestMapping(value = "/password/edit", method = RequestMethod.POST)
+    @PreAuthorize("#passwordChange.userName == authentication.name or hasRole('ROLE_ADMIN')")
+    public String changePassword(@ModelAttribute("passwordChange") PasswordChange passwordChange,
+			RedirectAttributes redirectAttributes) {
+    	User user = userService.findUserByUserName(passwordChange.getUserName());
+    	if (!userService.validOldPassword(user, passwordChange.getOldPassword())) {
+        	redirectAttributes.addFlashAttribute("invalid", true);
+    	} else {
+    		userService.changeUserPassword(user, passwordChange.getNewPassword());
+        	redirectAttributes.addFlashAttribute("success", true);
+    	}
+    	return "redirect:/password/edit.html";
+    }
 
 	@RequestMapping("/users")
 	public String users(Model model) {
@@ -172,21 +204,52 @@ public class UserController {
 
 	@RequestMapping("/users/{id}")
 	public String userDetail(Model model, @PathVariable String id) {
-		model.addAttribute("user", userService.findOneByUserId(id));
+		model.addAttribute("user", userService.findUserByUserId(id));
 		return "admin/user-detail";
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.GET)
 	public String account(Model model, Principal principal) {
 		String name = principal.getName();
-		model.addAttribute("user", userService.findOneByUserName(name));
+		model.addAttribute("user", userService.findUserByUserName(name));
 		return "settings/account";
 	}
 
 	@RequestMapping("/users/remove/{id}")
 	public String removeUser(@PathVariable String id) {
-		userService.delete(id);
+		userService.deleteUser(id);
 		return "redirect:/users.html";
+	}
+
+	@SuppressWarnings("unused")
+	private class PasswordChange {
+		private String userName;
+		private String oldPassword;
+		private String newPassword;
+
+		public String getUserName() {
+			return userName;
+		}
+
+		public void setUserName(String userName) {
+			this.userName = userName;
+		}
+
+		public String getOldPassword() {
+			return oldPassword;
+		}
+
+		public void setOldPassword(String oldPassword) {
+			this.oldPassword = oldPassword;
+		}
+
+		public String getNewPassword() {
+			return newPassword;
+		}
+
+		public void setNewPassword(String newPassword) {
+			this.newPassword = newPassword;
+		}
 	}
 
 }

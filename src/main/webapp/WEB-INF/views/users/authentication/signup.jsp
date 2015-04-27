@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
+
+<div class="page-header">
+  <h2>Sign Up <small>Fill out form to create a new account</small></h2>
+</div>
 
 <form:form commandName="user" cssClass="form-horizontal registrationForm">
 
 	<c:if test="${success eq true}">
-		<div class="alert alert-success">Registration Successful</div>
+		<div class="alert alert-success">Registration Successful. Check your email for a link to activate your account.</div>
 	</c:if>
 
 	<div class="form-group">

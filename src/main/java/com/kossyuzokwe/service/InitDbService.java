@@ -4,19 +4,25 @@ import java.util.Arrays;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kossyuzokwe.dao.PasswordResetTokenRepository;
 import com.kossyuzokwe.dao.RoleRepository;
 import com.kossyuzokwe.dao.UserRepository;
+import com.kossyuzokwe.dao.VerificationTokenRepository;
 import com.kossyuzokwe.model.Role;
 import com.kossyuzokwe.model.User;
 
 @Service
 public class InitDbService implements ApplicationListener<ContextRefreshedEvent> {
+	
+	Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
 	private boolean alreadySetup = false;
 
@@ -27,42 +33,14 @@ public class InitDbService implements ApplicationListener<ContextRefreshedEvent>
 	private UserRepository userRepository;
 	
 	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
+	
+	@Autowired
+	private PasswordResetTokenRepository resetTokenRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-/*	@PostConstruct
-	public void init() {
-		if (roleRepository.findByRoleName("ROLE_ADMIN") == null) {
-			Role roleUser = new Role();
-			roleUser.setRoleName("ROLE_USER");
-			roleRepository.save(roleUser);
-
-			Role roleAdmin = new Role();
-			roleAdmin.setRoleName("ROLE_ADMIN");
-			roleRepository.save(roleAdmin);
-
-			User userAdmin = new User();
-			userAdmin.setUserEnabled(true);
-			userAdmin.setUserName("admin");
-			userAdmin.setUserEmail("admin@admin.com");
-			userAdmin.setUserPassword(passwordEncoder.encode("admin"));
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(roleUser);
-			roles.add(roleAdmin);
-			userAdmin.setRoles(roles);
-			userRepository.save(userAdmin);
-
-			User userNotAdmin = new User();
-			userNotAdmin.setUserEnabled(true);
-			userNotAdmin.setUserName("test");
-			userNotAdmin.setUserEmail("test@test.com");
-			userNotAdmin.setUserPassword(passwordEncoder.encode("test"));
-			List<Role> roles2 = new ArrayList<Role>();
-			roles2.add(roleUser);
-			userNotAdmin.setRoles(roles2);
-			userRepository.save(userNotAdmin);
-		}
-	}
-*/
+	
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {

@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
 
-<p class="text-center">The time on the server is ${serverTime}.</p>
+<div class="jumbotron">
+  <h1>Hello, world!</h1>
+  <p>The time on the server is ${serverTime}.</p>
+</div>
 
 <div id="lipsum">
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis

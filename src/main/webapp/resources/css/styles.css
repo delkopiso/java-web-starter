@@ -1,3 +1,13 @@
+/* default.jsp - Jumbotron background image
+-------------------------------------------------- */
+.jumbotron { 
+  background: url(../images/jumbotron.svg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 /* default.jsp - Fixed navbar
 -------------------------------------------------- */
 body {

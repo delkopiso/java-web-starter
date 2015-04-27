@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class IndexController {
-
-	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+	
+	Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@RequestMapping("/index")
 	public String index(Model model, Locale locale) {
-		logger.info("Welcome home! The client's locale is {}.", locale);
+		LOGGER.info("Welcome home! The client's locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);

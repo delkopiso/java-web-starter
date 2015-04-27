@@ -11,9 +11,9 @@
 	<http>
 		<intercept-url pattern="/users**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/account**" access="hasRole('ROLE_USER')" />
-		<form-login login-page="/signin.html" />
 		<logout logout-success-url="/" />
+		<intercept-url pattern="/account**" access="isAuthenticated()" />
+		<form-login login-page="/signin.html" authentication-failure-url="/signin.html?error=true" />
 	</http>
 
 	<authentication-manager>

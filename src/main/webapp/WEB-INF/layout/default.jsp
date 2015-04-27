@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 
 <%@ include file="taglib.jsp"%>
 <!DOCTYPE html>
@@ -37,7 +37,10 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href='<spring:url value="/" />'>Starter</a>
+					<a class="navbar-brand" href='<spring:url value="/" />'> <img
+						alt="Brand" width="30" height="30"
+						src='<spring:url value="/resources/images/logo.svg" />'>
+					</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -61,17 +64,19 @@
 						<security:authorize access="isAuthenticated()">
 							<li class="dropdown ${current == 'settings' ? 'active' : ''}"><a
 								href="#" class="dropdown-toggle" data-toggle="dropdown"
-								role="button" aria-expanded="false">Me <span class="caret"></span>
+								role="button" aria-expanded="false">${pageContext.request.userPrincipal.name}
+									<span class="caret"></span>
 							</a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href='<spring:url value="/account.html" />'>Account</a></li>
-									<li><a href="#">Edit Profile</a></li>
+									<li><a href='<spring:url value="/password/edit.html" />'>Change
+											Password</a></li>
 									<li class="divider"></li>
 									<li><c:url var="logoutUrl" value="/logout" />
 										<form name="f" action="${logoutUrl}" method="post">
 											<input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" />
-										</form> <a href="#" onclick="document.f.submit()">Log out</a></li>
+										</form> <a href="#" onclick="document.f.submit()">Sign out</a></li>
 								</ul></li>
 						</security:authorize>
 					</ul>

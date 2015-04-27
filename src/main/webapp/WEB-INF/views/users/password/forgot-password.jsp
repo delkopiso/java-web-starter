@@ -3,14 +3,16 @@
 
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
 
-<h2>Forgot Password</h2>
+<div class="page-header">
+  <h2>Forgot Password <small>...</small></h2>
+</div>
 
 <c:choose>
-	<c:when test="${notfound eq false}">
+	<c:when test="${exists eq true}">
 		<div class="alert alert-info" role="alert">An email message has
 			been sent out with instructions on how to reset your password.</div>
 	</c:when>
-	<c:when test="${notfound eq true}">
+	<c:when test="${exists eq false}">
 		<div class="alert alert-danger" role="alert">
 			Unfortunately, the email you entered could not be found in our
 			system. <a href='<spring:url value="/signup.html" />'
@@ -33,7 +35,6 @@
 				id="inputEmail" placeholder="Email Address" />
 		</div>
 	</div>
-	<form:input type="hidden" path="userId" value="${id}" />
 	<div class="form-group">
 		<div class="col-sm-offset-3 col-sm-9">
 			<input type="submit" value="Request Reset" class="btn btn-primary" />
