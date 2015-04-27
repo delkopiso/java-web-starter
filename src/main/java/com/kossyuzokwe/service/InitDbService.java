@@ -21,64 +21,73 @@ import com.kossyuzokwe.model.User;
 
 @Service
 public class InitDbService implements ApplicationListener<ContextRefreshedEvent> {
-	
+
 	Logger LOGGER = LoggerFactory.getLogger(getClass());
-	
-	private boolean alreadySetup = false;
 
 	@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
-	
+
 	@Autowired
 	private PasswordResetTokenRepository resetTokenRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if (alreadySetup) {
-            return;
-        }
-		
 		createRoleIfNotFound("ROLE_ADMIN");
-        createRoleIfNotFound("ROLE_USER");
-
-        Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
-        Role userRole = roleRepository.findByRoleName("ROLE_USER");
-        User adminUser = new User();
-        adminUser.setUserName("admin");
-        adminUser.setUserPassword(passwordEncoder.encode("admin"));
-        adminUser.setUserEmail("admin@admin.com");
-        adminUser.setRoles(Arrays.asList(adminRole, userRole));
-        adminUser.setUserEnabled(true);
-        userRepository.save(adminUser);
-
-        User testUser = new User();
-        testUser.setUserName("test");
-        testUser.setUserPassword(passwordEncoder.encode("test"));
-        testUser.setUserEmail("test@test.com");
-        testUser.setRoles(Arrays.asList(userRole));
-        testUser.setUserEnabled(true);
-        userRepository.save(testUser);
-
-        alreadySetup = true;
+		createRoleIfNotFound("ROLE_USER");
+		createAdminIfNotFound();
+		createTestUserIfNotFound();
 	}
 
-    @Transactional
-    private Role createRoleIfNotFound(String name) {
-        Role role = roleRepository.findByRoleName(name);
-        if (role == null) {
-            role = new Role(name);
-            roleRepository.save(role);
-        }
-        return role;
-    }
+	@Transactional
+	private Role createRoleIfNotFound(String name) {
+		Role role = roleRepository.findByRoleName(name);
+		if (role == null) {
+			role = new Role(name);
+			roleRepository.save(role);
+		}
+		return role;
+	}
+
+	@Transactional
+	private User createAdminIfNotFound() {
+		User user = userRepository.findByUserName("admin");
+		if (user == null) {
+			Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
+			Role userRole = roleRepository.findByRoleName("ROLE_USER");
+			User adminUser = new User();
+			adminUser.setUserName("admin");
+			adminUser.setUserPassword(passwordEncoder.encode("admin"));
+			adminUser.setUserEmail("admin@admin.com");
+			adminUser.setRoles(Arrays.asList(adminRole, userRole));
+			adminUser.setUserEnabled(true);
+			user = userRepository.save(adminUser);
+		}
+		return user;
+	}
+
+	@Transactional
+	private User createTestUserIfNotFound() {
+		User user = userRepository.findByUserName("test");
+		if (user == null) {
+			Role userRole = roleRepository.findByRoleName("ROLE_USER");
+			User testUser = new User();
+			testUser.setUserName("test");
+			testUser.setUserPassword(passwordEncoder.encode("test"));
+			testUser.setUserEmail("test@test.com");
+			testUser.setRoles(Arrays.asList(userRole));
+			testUser.setUserEnabled(true);
+			user = userRepository.save(testUser);
+		}
+		return user;
+	}
 }
