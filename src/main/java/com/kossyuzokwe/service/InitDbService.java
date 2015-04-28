@@ -12,10 +12,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kossyuzokwe.dao.PasswordResetTokenRepository;
 import com.kossyuzokwe.dao.RoleRepository;
 import com.kossyuzokwe.dao.UserRepository;
-import com.kossyuzokwe.dao.VerificationTokenRepository;
 import com.kossyuzokwe.model.Role;
 import com.kossyuzokwe.model.User;
 
@@ -29,12 +27,6 @@ public class InitDbService implements ApplicationListener<ContextRefreshedEvent>
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private VerificationTokenRepository verificationTokenRepository;
-
-	@Autowired
-	private PasswordResetTokenRepository resetTokenRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
