@@ -38,16 +38,6 @@
 		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password.jsp" />
 		<put-attribute name="current" value="signin" />
 	</definition>
-	<definition name="password/reset-success" extends="default">
-		<put-attribute name="title" value="Reset Password" />
-		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password-success.jsp" />
-		<put-attribute name="current" value="signin" />
-	</definition>
-	<definition name="password/reset-invalid" extends="default">
-		<put-attribute name="title" value="Reset Password" />
-		<put-attribute name="body" value="/WEB-INF/views/users/password/reset-password-invalid.jsp" />
-		<put-attribute name="current" value="signin" />
-	</definition>
 	<definition name="admin/users" extends="default">
 		<put-attribute name="title" value="Users" />
 		<put-attribute name="body" value="/WEB-INF/views/users/admin/list-users.jsp" />
