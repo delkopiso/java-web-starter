@@ -2,7 +2,7 @@
 # Java Web Starter
 
 A starter Java web application based on Spring. It leverages Spring Web MVC, Spring Data JPA with a Hibernate implementation, and Spring Security. 
-Live sample: <http://java-web-starter.herokuapp.com> 
+:octocat: &nbsp;**Live Site**: <http://java-web-starter.herokuapp.com> 
 
 [![Build Status](https://travis-ci.org/delkopiso/java-web-starter.svg?branch=master)](https://travis-ci.org/delkopiso/java-web-starter)
 
@@ -54,7 +54,7 @@ Run the following commands in the application root directory:
 *   `mvn clean package`
 *   `java -jar target/dependency/webapp-runner.jar target/*.war`
 
-**_WARNING_ **: Running production-style will require you have PostgreSQL installed and the database credentials stored in the `DATABASE_URL` environment variable.
+**_WARNING_**: Running production-style will require you have PostgreSQL installed and the database credentials stored in the `DATABASE_URL` environment variable.
 
 ## Deployment
 
