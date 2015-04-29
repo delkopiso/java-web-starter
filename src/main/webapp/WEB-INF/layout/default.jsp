@@ -11,6 +11,8 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title><tiles:getAsString name="title" /></title>
 
+<link rel="icon" href='<spring:url value="/favicon.ico" />'>
+
 <link rel="stylesheet" type="text/css" href='<spring:url value="/resources/css/bootstrap.min.css" />'>
 <link rel="stylesheet" type="text/css" href='<spring:url value="/resources/css/styles.css" />'>
 
