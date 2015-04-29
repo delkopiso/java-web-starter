@@ -1,5 +1,5 @@
 
-# Java Web Starter
+# Java Web Starter &nbsp; [![Build Status](https://travis-ci.org/delkopiso/java-web-starter.svg?branch=master)](https://travis-ci.org/delkopiso/java-web-starter)
 
 A starter Java web application based on Spring. It leverages Spring Web MVC, Spring Data JPA with a Hibernate implementation, and Spring Security. 
 :octocat: &nbsp;**Live Site**: <http://java-web-starter.herokuapp.com> 
