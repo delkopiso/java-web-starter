@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "reset_token")
@@ -30,6 +32,7 @@ public class PasswordResetToken {
 
 	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "user_id")
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User user;
 
 	private Date expiryDate;
