@@ -4,8 +4,6 @@
 A starter Java web application based on Spring. It leverages Spring Web MVC, Spring Data JPA with a Hibernate implementation, and Spring Security. 
 :octocat: &nbsp;**Live Site**: <http://java-web-starter.herokuapp.com> 
 
-[![Build Status](https://travis-ci.org/delkopiso/java-web-starter.svg?branch=master)](https://travis-ci.org/delkopiso/java-web-starter)
-
 ## Scope
 This is meant to be a starter. It is configured with User and Role data models which are used to implement best-practice authentication schemes.
 The application comes set up with two users pre-configured: 
