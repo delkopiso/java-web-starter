@@ -13,7 +13,7 @@
 			aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<strong>Verified!</strong> Your account has been verified.
+		<strong>Welcome!</strong> Your account has been verified.
 	</div>
 </c:if>
 

@@ -4,13 +4,13 @@
 <%@ include file="/WEB-INF/layout/taglib.jsp"%>
 
 <div class="page-header">
-  <h2>Sign Up <small>Fill out form to create a new account</small></h2>
+  <h2>Sign Up <small>to create a new account</small></h2>
 </div>
 
 <form:form commandName="user" cssClass="form-horizontal registrationForm">
 
 	<c:if test="${success eq true}">
-		<div class="alert alert-success">Registration Successful. Check your email for a link to activate your account.</div>
+		<div class="alert alert-success">Registration Successful. Please check your email for a link to activate your account.</div>
 	</c:if>
 
 	<div class="form-group">
