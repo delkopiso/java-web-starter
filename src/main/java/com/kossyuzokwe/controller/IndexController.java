@@ -17,8 +17,6 @@ public class IndexController {
 
 	@RequestMapping("/index")
 	public String index(Model model, Locale locale) {
-		LOGGER.info("Welcome home! The client's locale is {}.", locale);
-		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
