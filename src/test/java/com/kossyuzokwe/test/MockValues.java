@@ -1,6 +1,7 @@
 package com.kossyuzokwe.test;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import org.bson.types.ObjectId;
 
@@ -26,6 +27,10 @@ public class MockValues {
 	
 	public MockValues() {
 		super();
+	}
+	
+	public String nextUUID() {
+		return UUID.randomUUID().toString();
 	}
 	
 	public String nextId() {
