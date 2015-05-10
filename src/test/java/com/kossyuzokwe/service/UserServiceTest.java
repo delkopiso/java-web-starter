@@ -64,6 +64,32 @@ public class UserServiceTest {
 	}
 
 	@Test
+	public void findUserByUserName() {
+		// Given
+		User user = userFactoryForTest.newUserWithUserName();
+		String userName = user.getUserName();
+		when(userRepository.findByUserName(userName)).thenReturn(user);
+
+		// When
+		User userFound = userService.findUserByUserName(userName);
+
+		// Then
+		assertEquals(user.getUserName(),userFound.getUserName());
+	}
+
+	@Test
+	public void findUserByUserEmail() {
+		// Given
+		User user = userFactoryForTest.newUserWithEmail();
+		String userEmail = user.getUserEmail();
+		when(userRepository.findByUserEmail(userEmail)).thenReturn(user);
+
+		// When
+		User userFound = userService.findUserByUserEmail(userEmail);
+
+		// Then
+		assertEquals(user.getUserEmail(),userFound.getUserEmail());
+	}
 	public void deleteUser() {
 		// Given
 		String id = mockValues.nextId();
