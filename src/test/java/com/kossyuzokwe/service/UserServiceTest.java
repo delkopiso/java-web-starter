@@ -1,7 +1,6 @@
 package com.kossyuzokwe.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,8 +44,8 @@ public class UserServiceTest {
 		List<User> usersFounds = new ArrayList<User>(userService.findAll());
 
 		// Then
-		assertTrue(user1 == usersFounds.get(0));
-		assertTrue(user2 == usersFounds.get(1));
+		assertEquals(user1.getUserId(), usersFounds.get(0).getUserId());
+		assertEquals(user2.getUserId(), usersFounds.get(1).getUserId());
 	}
 
 	@Test
