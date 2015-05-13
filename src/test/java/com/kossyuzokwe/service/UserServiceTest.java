@@ -13,15 +13,19 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.kossyuzokwe.dao.PasswordResetTokenRepository;
+import com.kossyuzokwe.dao.RoleRepository;
 import com.kossyuzokwe.dao.UserRepository;
 import com.kossyuzokwe.dao.VerificationTokenRepository;
 import com.kossyuzokwe.model.PasswordResetToken;
+import com.kossyuzokwe.model.Role;
 import com.kossyuzokwe.model.User;
 import com.kossyuzokwe.model.VerificationToken;
 import com.kossyuzokwe.test.MockValues;
 import com.kossyuzokwe.test.PasswordResetTokenFactoryForTest;
+import com.kossyuzokwe.test.RoleFactoryForTest;
 import com.kossyuzokwe.test.UserFactoryForTest;
 import com.kossyuzokwe.test.VerificationTokenFactoryForTest;
 
@@ -35,12 +39,20 @@ public class UserServiceTest {
 	private UserRepository userRepository;
 	
 	@Mock
+	private RoleRepository roleRepository;
+	
+	@Mock
 	private VerificationTokenRepository verificationTokenRepository;
 	
 	@Mock
 	private PasswordResetTokenRepository resetTokenRepository;
 	
+	@Mock
+	private PasswordEncoder passwordEncoder;
+	
 	private UserFactoryForTest userFactoryForTest = new UserFactoryForTest();
+	
+	private RoleFactoryForTest roleFactoryForTest = new RoleFactoryForTest();
 	
 	private VerificationTokenFactoryForTest verificationTokenFactoryForTest = new VerificationTokenFactoryForTest();
 	
@@ -162,4 +174,21 @@ public class UserServiceTest {
 	}
 
 }
+	@Test
+	public void registerNewUserAccount() {
+		// Given
+		User user = userFactoryForTest.newRegisteredUser();
+		Role role = roleFactoryForTest.newRoleWithName();
+		when(userRepository.save(user)).thenReturn(user);
+		when(roleRepository.findByRoleName(role.getRoleName())).thenReturn(role);
+
+		// When
+		User userResult = userService.registerNewUserAccount(user);
+
+		// Then
+		assertEquals(userResult.getUserId(), user.getUserId());
+		assertEquals(userResult.getUserName(), user.getUserName());
+		assertEquals(userResult.getUserEmail(), user.getUserEmail());
+		assertEquals(userResult.getUserPassword(), userResult.getUserPassword());
+	}
 
