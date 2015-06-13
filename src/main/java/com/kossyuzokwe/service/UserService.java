@@ -108,9 +108,9 @@ public class UserService {
 		return resetTokenRepository.findByToken(token);
 	}
 
-	public void changeUserPassword(User user, String password) {
+	public User changeUserPassword(User user, String password) {
 		user.setUserPassword(passwordEncoder.encode(password));
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	public boolean validOldPassword(User user, String oldPassword) {

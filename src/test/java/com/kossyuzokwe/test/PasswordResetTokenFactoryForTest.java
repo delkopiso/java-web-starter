@@ -9,7 +9,7 @@ public class PasswordResetTokenFactoryForTest {
 	
 	public PasswordResetToken newPasswordResetToken(User user) {
 		String id = mockValues.nextId();
-		String token = mockValues.nextUUID();
+		String token = mockValues.nextUUID().toString();
 		PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
 		passwordResetToken.setPasswordResetTokenId(id);
 		return passwordResetToken;

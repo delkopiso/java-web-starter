@@ -1,6 +1,9 @@
 package com.kossyuzokwe.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -173,7 +176,6 @@ public class UserServiceTest {
 		verify(userRepository).delete(id);
 	}
 
-}
 	@Test
 	public void registerNewUserAccount() {
 		// Given
@@ -192,3 +194,133 @@ public class UserServiceTest {
 		assertEquals(userResult.getUserPassword(), userResult.getUserPassword());
 	}
 
+	@Test
+	public void createVerificationTokenForUser() {
+		// Given
+		User user = userFactoryForTest.newUser();
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		when(verificationTokenRepository.save(verificationToken)).thenReturn(verificationToken);
+		
+		//When
+		VerificationToken result = verificationTokenRepository.save(verificationToken);
+		
+		// Then
+		assertEquals(verificationToken.getVerificationId(), result.getVerificationId());
+	}
+
+	@Test
+	public void getVerificationToken() {
+		// Given
+		User user = userFactoryForTest.newUser();
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		String token = verificationToken.getToken();
+		when(verificationTokenRepository.findByToken(token)).thenReturn(verificationToken);
+
+		//When
+		VerificationToken result = userService.getVerificationToken(token);
+		
+		// Then
+		assertEquals(verificationToken.getVerificationId(), result.getVerificationId());
+	}
+
+	@Test
+	public void regenerateVerificationToken() {
+		// Given
+		User user = userFactoryForTest.newUser();
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		String existingToken = verificationToken.getToken();
+		when(verificationTokenRepository.findByToken(existingToken)).thenReturn(verificationToken);
+		when(verificationTokenRepository.save(verificationToken)).thenReturn(verificationToken);
+
+		//When
+		VerificationToken result = userService.regenerateVerificationToken(existingToken);
+		
+		// Then
+		assertEquals(verificationToken.getVerificationId(), result.getVerificationId());
+		assertNotEquals(existingToken, result.getToken());
+	}
+
+	@Test
+	public void createPasswordResetTokenForUser() {
+		// Given
+		User user = userFactoryForTest.newUser();
+		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user);
+		when(resetTokenRepository.save(resetToken)).thenReturn(resetToken);
+		
+		//When
+		PasswordResetToken result = resetTokenRepository.save(resetToken);
+		
+		// Then
+		assertEquals(resetToken.getPasswordResetTokenId(), result.getPasswordResetTokenId());
+	}
+
+	@Test
+	public void getPasswordResetToken() {
+		// Given
+		User user = userFactoryForTest.newUser();
+		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user);
+		String token = resetToken.getToken();
+		when(resetTokenRepository.findByToken(token)).thenReturn(resetToken);
+
+		//When
+		PasswordResetToken result = userService.getPasswordResetToken(token);
+		
+		// Then
+		assertEquals(resetToken.getPasswordResetTokenId(), result.getPasswordResetTokenId());
+	}
+
+	@Test
+	public void changeUserPassword() {
+		// Given
+		User user = userFactoryForTest.newUserWithPassword();
+		String password = mockValues.nextString(mockValues.nextInteger());
+		when(passwordEncoder.encode(password)).thenReturn(password);
+		when(userRepository.save(user)).thenReturn(user);
+
+		// When
+		User userResult = userService.changeUserPassword(user, password);
+
+		// Then
+		assertEquals(password, userResult.getUserPassword());
+	}
+
+	@Test
+	public void validOldPasswordFalse() {
+		// Given
+		User user = userFactoryForTest.newUserWithPassword();
+		String password = mockValues.nextString(mockValues.nextInteger());
+
+		// When
+		boolean matches = userService.validOldPassword(user, password);
+
+		// Then
+		assertFalse(matches);
+	}
+
+	@Test
+	public void emailExistsTrue() {
+		// Given
+		User user = userFactoryForTest.newUserWithEmail();
+		when(userRepository.findByUserEmail(user.getUserEmail())).thenReturn(user);
+		
+		//When
+		boolean exists = userService.emailExists(user.getUserEmail());
+		
+		// Then
+		assertTrue(exists);
+	}
+
+	@Test
+	public void emailExistsFalse() {
+		// Given
+		User user = userFactoryForTest.newUserWithEmail();
+		when(userRepository.findByUserEmail(user.getUserEmail())).thenReturn(null);
+		
+		//When
+		boolean exists = userService.emailExists(user.getUserEmail());
+		
+		// Then
+		assertFalse(exists);
+	}
+
+}

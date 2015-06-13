@@ -29,8 +29,8 @@ public class MockValues {
 		super();
 	}
 	
-	public String nextUUID() {
-		return UUID.randomUUID().toString();
+	public UUID nextUUID() {
+		return UUID.randomUUID();
 	}
 	
 	public String nextId() {

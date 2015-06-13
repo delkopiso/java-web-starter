@@ -9,7 +9,7 @@ public class VerificationTokenFactoryForTest {
 	
 	public VerificationToken newVerificationToken(User user) {
 		String id = mockValues.nextId();
-		String token = mockValues.nextUUID();
+		String token = mockValues.nextUUID().toString();
 		VerificationToken verificationToken = new VerificationToken(token, user);
 		verificationToken.setVerificationId(id);
 		return verificationToken;

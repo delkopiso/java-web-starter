@@ -31,6 +31,13 @@ public class UserFactoryForTest {
 		return user;
 	}
 	
+	public User newUserWithPassword() {
+		User user = newUser();
+		String password = mockValues.nextString(mockValues.nextInteger());
+		user.setUserPassword(password);
+		return user;
+	}
+	
 	public User newRegisteredUser() {
 		User user = newUser();
 		String userName = mockValues.nextString(mockValues.nextInteger());
