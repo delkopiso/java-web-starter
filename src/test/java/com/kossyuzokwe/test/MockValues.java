@@ -29,6 +29,12 @@ public class MockValues {
 		super();
 	}
 	
+	public String nextUrl() {
+        String domain = nextString(nextInteger());
+        String path = nextString(nextInteger());
+        return "http://" + domain + ".com" + path;
+    };
+	
 	public UUID nextUUID() {
 		return UUID.randomUUID();
 	}
