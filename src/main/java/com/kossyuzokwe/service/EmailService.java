@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kossyuzokwe.event.OnUserEvent;
 import com.kossyuzokwe.model.User;
+import com.kossyuzokwe.util.Constants;
 
 @Service
 public class EmailService {
@@ -24,29 +25,23 @@ public class EmailService {
 
 	public SimpleMailMessage constructVerifyEmailMessage(
 			OnUserEvent event, User user, String token) {
-		String recipientAddress = user.getUserEmail();
-		String subject = "Registration Confirmation";
 		String confirmationUrl = event.getAppUrl() + "/verify/" + token + ".html";
 		SimpleMailMessage email = new SimpleMailMessage();
-		email.setTo(recipientAddress);
-		email.setSubject(subject);
-		String message = "Your registration was successful. Click the following link to verify your account:";
-		email.setText(message + " \r\n" + confirmationUrl);
-		email.setFrom("admin@java.web.starter.com");
+		email.setTo(user.getUserEmail());
+		email.setSubject(Constants.REGISTRATION_EMAIL_SUBJECT);
+		email.setText(Constants.REGISTRATION_EMAIL_PREAMBLE + " \r\n" + confirmationUrl);
+		email.setFrom(Constants.SENDER_EMAIL);
 		return email;
 	}
 
 	public SimpleMailMessage constructResetEmailMessage(
 			OnUserEvent event, User user, String token) {
-		String recipientAddress = user.getUserEmail();
-		String subject = "Registration Confirmation";
 		String confirmationUrl = event.getAppUrl() + "/reset/" + user.getUserId() + "/" + token + ".html";
 		SimpleMailMessage email = new SimpleMailMessage();
-		email.setTo(recipientAddress);
-		email.setSubject(subject);
-		String message = "You have requested to reset your password. Click the following link to change your password:";
-		email.setText(message + " \r\n" + confirmationUrl);
-		email.setFrom("admin@java.web.starter.com");
+		email.setTo(user.getUserEmail());
+		email.setSubject(Constants.RESET_EMAIL_SUBJECT);
+		email.setText(Constants.RESET_EMAIL_PREAMBLE + " \r\n" + confirmationUrl);
+		email.setFrom(Constants.SENDER_EMAIL);
 		return email;
 	}
 }
