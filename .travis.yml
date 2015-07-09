@@ -1,3 +1,12 @@
+sudo: false
+
 language: java
-jdk:
-  - oraclejdk8
+jdk: oraclejdk8
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
+install: /bin/true
+script:
+  - mvn clean install -B --settings external-config/travis/settings.xml && mvn clean cobertura:cobertura coveralls:report
