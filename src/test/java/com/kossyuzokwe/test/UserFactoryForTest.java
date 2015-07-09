@@ -1,5 +1,6 @@
 package com.kossyuzokwe.test;
 
+import com.kossyuzokwe.model.PasswordChange;
 import com.kossyuzokwe.model.User;
 
 public class UserFactoryForTest {
@@ -47,6 +48,14 @@ public class UserFactoryForTest {
 		String password = mockValues.nextString(mockValues.nextInteger());
 		user.setUserPassword(password);
 		return user;
+	}
+	
+	public PasswordChange newPasswordChange(User user) {
+		PasswordChange passwordChange = new PasswordChange();
+		passwordChange.setUserName(user.getUserName());
+		passwordChange.setOldPassword(user.getUserPassword());
+		passwordChange.setNewPassword(mockValues.nextString(mockValues.nextInteger()));
+		return passwordChange;
 	}
 	
 }

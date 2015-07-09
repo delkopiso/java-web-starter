@@ -1,26 +1,27 @@
 package com.kossyuzokwe.test;
 
 import com.kossyuzokwe.event.OnRegistrationCompleteEvent;
-import com.kossyuzokwe.event.OnUserEvent;
+import com.kossyuzokwe.event.OnResetPasswordEvent;
+import com.kossyuzokwe.event.OnReverifyAccountEvent;
 import com.kossyuzokwe.model.User;
 
 public class OnUserEventFactoryForTest {
 
 	private MockValues mockValues = new MockValues();
 	
-	public OnUserEvent newOnRegistrationCompleteEvent(User user) {
+	public OnRegistrationCompleteEvent newOnRegistrationCompleteEvent(User user) {
 		String url = mockValues.nextUrl();
 		return new OnRegistrationCompleteEvent(user, url);
 	}
 	
-	public OnUserEvent newOnReverifyAccountEvent(User user) {
+	public OnReverifyAccountEvent newOnReverifyAccountEvent(User user) {
 		String url = mockValues.nextUrl();
-		return new OnRegistrationCompleteEvent(user, url);
+		return new OnReverifyAccountEvent(user, url);
 	}
 	
-	public OnUserEvent newOnResetPasswordEvent(User user) {
+	public OnResetPasswordEvent newOnResetPasswordEvent(User user) {
 		String url = mockValues.nextUrl();
-		return new OnRegistrationCompleteEvent(user, url);
+		return new OnResetPasswordEvent(user, url);
 	}
 
 }

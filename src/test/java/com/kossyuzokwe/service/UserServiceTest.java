@@ -125,7 +125,7 @@ public class UserServiceTest {
 	public void findUserByVerificationToken() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user, false);
 		String token = verificationToken.getToken();
 		when(verificationTokenRepository.findByToken(token)).thenReturn(verificationToken);
 		
@@ -140,7 +140,7 @@ public class UserServiceTest {
 	public void findUserByPasswordResetToken() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		PasswordResetToken passwordResetToken = resetTokenFactoryForTest.newPasswordResetToken(user);
+		PasswordResetToken passwordResetToken = resetTokenFactoryForTest.newPasswordResetToken(user, false);
 		String token = passwordResetToken.getToken();
 		when(resetTokenRepository.findByToken(token)).thenReturn(passwordResetToken);
 		
@@ -198,7 +198,7 @@ public class UserServiceTest {
 	public void createVerificationTokenForUser() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user, false);
 		when(verificationTokenRepository.save(verificationToken)).thenReturn(verificationToken);
 		
 		//When
@@ -212,7 +212,7 @@ public class UserServiceTest {
 	public void getVerificationToken() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user, false);
 		String token = verificationToken.getToken();
 		when(verificationTokenRepository.findByToken(token)).thenReturn(verificationToken);
 
@@ -227,7 +227,7 @@ public class UserServiceTest {
 	public void regenerateVerificationToken() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user);
+		VerificationToken verificationToken = verificationTokenFactoryForTest.newVerificationToken(user, false);
 		String existingToken = verificationToken.getToken();
 		when(verificationTokenRepository.findByToken(existingToken)).thenReturn(verificationToken);
 		when(verificationTokenRepository.save(verificationToken)).thenReturn(verificationToken);
@@ -244,7 +244,7 @@ public class UserServiceTest {
 	public void createPasswordResetTokenForUser() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user);
+		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user, false);
 		when(resetTokenRepository.save(resetToken)).thenReturn(resetToken);
 		
 		//When
@@ -258,7 +258,7 @@ public class UserServiceTest {
 	public void getPasswordResetToken() {
 		// Given
 		User user = userFactoryForTest.newUser();
-		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user);
+		PasswordResetToken resetToken = resetTokenFactoryForTest.newPasswordResetToken(user, false);
 		String token = resetToken.getToken();
 		when(resetTokenRepository.findByToken(token)).thenReturn(resetToken);
 
