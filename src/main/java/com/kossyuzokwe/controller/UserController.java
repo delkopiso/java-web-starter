@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kossyuzokwe.event.OnRegistrationCompleteEvent;
 import com.kossyuzokwe.event.OnResetPasswordEvent;
 import com.kossyuzokwe.event.OnReverifyAccountEvent;
+import com.kossyuzokwe.model.PasswordChange;
 import com.kossyuzokwe.model.PasswordResetToken;
 import com.kossyuzokwe.model.User;
 import com.kossyuzokwe.model.VerificationToken;
@@ -228,37 +229,6 @@ public class UserController {
 	public String removeUser(@PathVariable String id) {
 		userService.deleteUser(id);
 		return "redirect:/users.html";
-	}
-
-	@SuppressWarnings("unused")
-	private class PasswordChange {
-		private String userName;
-		private String oldPassword;
-		private String newPassword;
-
-		public String getUserName() {
-			return userName;
-		}
-
-		public void setUserName(String userName) {
-			this.userName = userName;
-		}
-
-		public String getOldPassword() {
-			return oldPassword;
-		}
-
-		public void setOldPassword(String oldPassword) {
-			this.oldPassword = oldPassword;
-		}
-
-		public String getNewPassword() {
-			return newPassword;
-		}
-
-		public void setNewPassword(String newPassword) {
-			this.newPassword = newPassword;
-		}
 	}
 
 }
